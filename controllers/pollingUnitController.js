@@ -6,13 +6,17 @@ async function getPollingUnits(req, res) {
 
     let sql = `
       SELECT
-        uniqueid,
-        polling_unit_id,
-        polling_unit_number,
-        polling_unit_name,
-        ward_id,
-        lga_id
-      FROM polling_unit
+        pu.uniqueid,
+        pu.polling_unit_id,
+        pu.polling_unit_number,
+        pu.polling_unit_name,
+        pu.ward_id,
+        pu.uniquewardid,
+        pu.lga_id,
+        w.ward_name
+      FROM polling_unit pu
+      LEFT JOIN ward w
+        ON pu.uniquewardid = w.uniqueid
     `;
 
     const params = [];
@@ -27,15 +31,15 @@ async function getPollingUnits(req, res) {
         });
       }
 
-      sql += ' WHERE lga_id = ?';
+      sql += ' WHERE pu.lga_id = ?';
       params.push(parsedLgaId);
     }
 
-    sql += ' ORDER BY polling_unit_name ASC';
+    sql += ' ORDER BY pu.polling_unit_name ASC';
 
     const [pollingUnits] = await db.query(sql, params);
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       count: pollingUnits.length,
       data: pollingUnits,
@@ -43,7 +47,7 @@ async function getPollingUnits(req, res) {
   } catch (error) {
     console.error('Error fetching polling units:', error.message);
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: 'Failed to retrieve polling units.',
     });
