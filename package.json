@@ -1,0 +1,23 @@
+{
+  "name": "bincom-election-results",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "Isah Muhammad",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^18.0.8",
+    "ejs": "^7.0.1",
+    "express": "^5.3.0",
+    "mysql2": "^3.24.6"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.6.1",
+    "nodemon": "^3.1.14",
+    "postcss": "^8.5.30",
+    "tailwindcss": "^3.4.1"
+  }
+}
